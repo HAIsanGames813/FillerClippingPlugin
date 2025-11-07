@@ -15,7 +15,6 @@ namespace FillerClippingPlugin.Effects
         bool isFirst = true;
 
         float currentXOffset = 0;
-        // float currentYOffset = 0; // YOffsetを削除
         float currentClipWidth = 0;
         float currentRotation = 0;
         float currentGap = 0;
@@ -67,7 +66,7 @@ namespace FillerClippingPlugin.Effects
             disposer.Collect(rightRotationEffect);
             rightCropEffect = new Crop(devices.DeviceContext);
             disposer.Collect(rightCropEffect);
-            rightCropEffect.BorderMode = BorderMode.Hard; // 境界線のエッジを硬く設定
+            rightCropEffect.BorderMode = BorderMode.Hard;
             rightTransformEffect = new AffineTransform2D(devices.DeviceContext);
             disposer.Collect(rightTransformEffect);
 
@@ -114,7 +113,6 @@ namespace FillerClippingPlugin.Effects
             var fps = effectDescription.FPS;
 
             var xOffset = (float)item.XOffset.GetValue(frame, length, fps);
-            // var yOffset = (float)item.YOffset.GetValue(frame, length, fps); // YOffsetを削除
             var clipWidth = (float)item.ClipWidth.GetValue(frame, length, fps);
             var rotation = (float)item.Rotation.GetValue(frame, length, fps);
             var gap = (float)item.Gap.GetValue(frame, length, fps);
@@ -129,7 +127,7 @@ namespace FillerClippingPlugin.Effects
 
             // 分断線（クリッピング帯）の中心
             var clipCenterX = itemCenterLocalX + xOffset;
-            var clipCenterY = itemCenterLocalY; // YOffsetを削除し、アイテムの中心Y座標に固定
+            var clipCenterY = itemCenterLocalY;
             var halfClipWidth = clipWidth / 2f;
 
             // --- 矩形定義（逆回転後の座標系に適用） ---
@@ -168,16 +166,11 @@ namespace FillerClippingPlugin.Effects
 
             // ----------------------------------------------------
             // Step 2 (leftTransformEffect/rightTransformEffect): 順回転 + 明示的な斜め移動行列を適用 (Cropより後)
-
-            // 90°ずれの移動ベクトルを使用 (X: cos, Y: sin)
-
             // 左パーツの最終斜め移動ベクトルを計算
-            // V = M * (cos(rad_gap), sin(rad_gap))
             var left_sep_x = left_move_mag * (float)Math.Cos(rad_gap);
             var left_sep_y = left_move_mag * (float)Math.Sin(rad_gap);
 
             // 右パーツの最終斜め移動ベクトルを計算
-            // V = M' * (cos(rad_gap), sin(rad_gap))
             var right_sep_x = right_move_mag * (float)Math.Cos(rad_gap);
             var right_sep_y = right_move_mag * (float)Math.Sin(rad_gap);
 
@@ -191,7 +184,6 @@ namespace FillerClippingPlugin.Effects
             // ----------------------------------------------------
 
             // 常に回転時のロジックを使用
-            // currentYOffsetのチェックを削除
             if (isFirst || currentXOffset != xOffset || currentClipWidth != clipWidth || currentRotation != rotation || currentGap != gap || currentGapAngle != gapAngle)
             {
                 // Crop矩形は常にMAX_BOUNDベースを使用
@@ -209,7 +201,6 @@ namespace FillerClippingPlugin.Effects
 
             isFirst = false;
             currentXOffset = xOffset;
-            // currentYOffset = yOffset; // YOffsetを削除
             currentClipWidth = clipWidth;
             currentRotation = rotation;
             currentGap = gap;
