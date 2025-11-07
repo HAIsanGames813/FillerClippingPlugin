@@ -2,7 +2,7 @@
 制作者:HAIsan
 
 ## ダウンロード方法
-
+[ここからダウンロード](https://github.com/HAIsanGames813/FillerClippingPlugin/releases)
 
 ## 概要
 分断と間詰め、分断後の移動ができるエフェクトを追加するプラグイン 
