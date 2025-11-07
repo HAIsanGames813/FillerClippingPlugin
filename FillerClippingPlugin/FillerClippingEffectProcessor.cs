@@ -4,7 +4,6 @@ using Vortice.Direct2D1.Effects;
 using YukkuriMovieMaker.Commons;
 using YukkuriMovieMaker.Player.Video;
 using YukkuriMovieMaker.Player.Video.Effects;
-using System;
 
 namespace FillerClippingPlugin.Effects
 {
